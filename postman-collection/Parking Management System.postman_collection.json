@@ -1,0 +1,294 @@
+{
+	"info": {
+		"_postman_id": "ba6578bb-9a47-4ca9-a8ea-780fcfec7513",
+		"name": "Parking Management System",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33643386"
+	},
+	"item": [
+		{
+			"name": "Parking Manager",
+			"item": [
+				{
+					"name": "Crate Parking Lot",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.status == \"OK\"){",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.environment.set(\"parking-lot-id\", jsonData.Data.ParkingLot.ID);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"Name\": \"Sample Parking Lot 2\",\n    \"TotalSpace\": 15\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/lot/create",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lot",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Maintenance Slot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"LotID\": \"fffc3363-6131-4161-aeeb-26d2ef521d3f\",\n    \"SlotNumber\": 2,\n    \"Status\": \"UNDERMAINTENANCE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/parking-slot/update",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"parking-slot",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Available Slot",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"LotID\": \"fffc3363-6131-4161-aeeb-26d2ef521d3f\",\n    \"SlotNumber\": 2,\n    \"Status\": \"AVAILABLE\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/parking-slot/update",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"parking-slot",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Statements By Date",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/statements?StartDate=2024-03-20T23:49:53.312518Z&EndDate=2024-03-22T23:49:53.312518Z",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"statements"
+							],
+							"query": [
+								{
+									"key": "StartDate",
+									"value": "2024-03-20T23:49:53.312518Z"
+								},
+								{
+									"key": "EndDate",
+									"value": "2024-03-22T23:49:53.312518Z"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Parking Lot",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/lot/27c5a6e9-989d-437a-bfc3-a5e6d24263ab/get",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lot",
+								"27c5a6e9-989d-437a-bfc3-a5e6d24263ab",
+								"get"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Parking Lot",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/lot/list",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lot",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vehicle",
+			"item": [
+				{
+					"name": "Park Vehicle",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"if(pm.response.status == \"OK\"){",
+									"    var jsonData = JSON.parse(responseBody);",
+									"    pm.environment.set(\"vehicle-id\", jsonData.Data.Vehicle.ID);",
+									"}"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"VehicleNo\": \"KHL-850\",\n    \"LotID\": \"27c5a6e9-989d-437a-bfc3-a5e6d24263ab\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/park",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"park"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UnPark Vehicle",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ParkingID\": \"e6931b88-87a7-4ca3-ba05-689f4b3d3b31\",\n    \"VehicleNo\":\"KHL-850\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BaseUrl}}/unpark",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"unpark"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Parking Lot",
+			"item": [
+				{
+					"name": "List Parking Lot",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BaseUrl}}/lot/list",
+							"host": [
+								"{{BaseUrl}}"
+							],
+							"path": [
+								"lot",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

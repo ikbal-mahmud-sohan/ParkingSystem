@@ -1,0 +1,7 @@
+{
+  "name": "gunk",
+  "version": "1.0.0",
+  "dependencies": {
+    "swagger-combine": "^1.4.0"
+  }
+}

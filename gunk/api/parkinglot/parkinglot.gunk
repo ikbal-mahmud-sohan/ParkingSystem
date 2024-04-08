@@ -1,0 +1,242 @@
+package parkinglot
+
+import (
+	"time"
+
+	"github.com/gunk/opt/http"
+	"github.com/gunk/opt/openapiv2"
+)
+
+type OrderBy int
+
+const (
+	DESC OrderBy = iota
+	ASC
+)
+
+type ParkingLot struct {
+	ID         string    `pb:"1" json:"ID"`
+	Name       string    `pb:"2" json:"Name"`
+	TotalSpace int32     `pb:"3" json:"TotalSpace"`
+	CreatedAt  time.Time `pb:"4" json:"CreatedAt"`
+	UpdatedAt  time.Time `pb:"5" json:"UpdatedAt"`
+}
+
+type ParkedVehicles struct {
+	VehicleNo   string    `pb:"1" json:"VehicleNo"`
+	EntryTime   time.Time `pb:"2" json:"EntryTime"`
+	ParkedHours int32     `pb:"3" json:"ParkedHours"`
+	Fee         int32     `pb:"4" json:"Fee"`
+	SlotID      string    `pb:"5" json:"SlotID"`
+}
+
+type GetParkingLot struct {
+	ID             string           `pb:"1" json:"ID"`
+	Name           string           `pb:"2" json:"Name"`
+	TotalSpace     int32            `pb:"3" json:"TotalSpace"`
+	TotalParked    int32            `pb:"4" json:"TotalParked"`
+	ParkedVehicles []ParkedVehicles `pb:"5" json:"ParkedVehicles"`
+	CreatedAt      time.Time        `pb:"6" json:"CreatedAt"`
+	UpdatedAt      time.Time        `pb:"7" json:"UpdatedAt"`
+}
+
+type ParkingLotData struct {
+	ParkingLot ParkingLot `pb:"1" json:"ParkingLot"`
+}
+
+type GetParkingLotData struct {
+	ParkingLot GetParkingLot `pb:"1" json:"ParkingLot"`
+}
+
+// InsertParkingLotRequest ...
+//
+// +gunk openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+//         Required: []string{
+//                 "Name",
+//                 "TotalSpace",
+//         },
+// }}
+type InsertParkingLotRequest struct {
+	Name       string `pb:"1" json:"Name"`
+	TotalSpace int32  `pb:"2" json:"TotalSpace"`
+}
+
+// InsertParkingLotResponse ...
+type InsertParkingLotResponse struct {
+	Data ParkingLotData `pb:"1" json:"Data"`
+}
+
+// ListParkingLotRequest ...
+type ListParkingLotRequest struct {
+	OrderBy      OrderBy `pb:"1" json:"OrderBy"`
+	SearchTerm   string  `pb:"2" json:"SearchTerm"`
+	SortByColumn string  `pb:"3" json:"SortByColumn"`
+	Limit        int     `pb:"4" json:"Limit"`
+	Offset       int     `pb:"5" json:"Offset"`
+}
+
+// ListParkingLotResponse ...
+type ListParkingLotData struct {
+	ParkingLot []ParkingLot `pb:"1" json:"ParkingLot"`
+}
+
+type ListParkingLotResponse struct {
+	Data  ListParkingLotData `pb:"1" json:"Data"`
+	Total int                `pb:"2" json:"Total"`
+}
+
+// GetParkingLotRequest ...
+//
+// +gunk openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+//         Required: []string{
+//                 "ID",
+//         },
+// }}
+type GetParkingLotRequest struct {
+	ID string `pb:"1" json:"ID"`
+}
+
+type GetParkingLotResponse struct {
+	Data GetParkingLotData `pb:"1" json:"Data"`
+}
+
+type ParkingLotService interface {
+	// InsertParkingLot
+	//
+	// +gunk http.Match{
+	//         Method: "POST",
+	//         Path:   "/lot/create",
+	//         Body:   "*",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"Parking Lot"},
+	//         Description: "Insert new parkinglot record.",
+	//         Summary:     "Insert new parkinglot",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/parkinglotInsertParkingLotResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"parking lot not found\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	InsertParkingLot(InsertParkingLotRequest) InsertParkingLotResponse
+
+	// ListParkingLot
+	//
+	// +gunk http.Match{
+	//         Method: "GET",
+	//         Path:   "/lot/list",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"Parking Lot"},
+	//         Description: "List all parkinglot records.",
+	//         Summary:     "List parkinglot records",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/parkinglotListParkingLotResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"failed to list parking lot\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	ListParkingLot(ListParkingLotRequest) ListParkingLotResponse
+
+	// GetParkingLot
+	//
+	// +gunk http.Match{
+	//         Method: "GET",
+	//         Path:   "/lot/{ID}/get",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"Parking Lot"},
+	//         Description: "Get parkinglot records.",
+	//         Summary:     "Get parkinglot records",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/parkinglotGetParkingLotResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"failed to get parking lot\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	GetParkingLot(GetParkingLotRequest) GetParkingLotResponse
+}

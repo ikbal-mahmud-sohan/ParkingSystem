@@ -1,0 +1,77 @@
+package parkingstatement
+
+import (
+	"time"
+
+	"github.com/gunk/opt/http"
+	"github.com/gunk/opt/openapiv2"
+)
+
+type Statement struct {
+	TotalEarning int32 `pb:"1" json:"TotalEarning"`
+	TotalParked  int32 `pb:"2" json:"TotalParked"`
+	TotalHours   int32 `pb:"3" json:"TotalHours"`
+}
+
+type StatementData struct {
+	Statement Statement `pb:"1" json:"Statements"`
+}
+
+type GetParkingStatementRequest struct {
+	StartDate time.Time `pb:"1" json:"StartDate"`
+	EndDate   time.Time `pb:"2" json:"EndDate"`
+}
+
+// UnParkVehicleResponse ...
+type GetParkingStatementResponse struct {
+	Data StatementData `pb:"1" json:"Data"`
+}
+
+// StatementService ...
+type StatementService interface {
+	// GetParkingStatements return parking lot Statement record.
+	//
+	// +gunk http.Match{
+	//         Method: "GET",
+	//         Path:   "/statements",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"Statement"},
+	//         Description: "Statement record.",
+	//         Summary:     "Statement",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/StatementsGetParkingStatementResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"parking data not found\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	GetParkingStatement(GetParkingStatementRequest) GetParkingStatementResponse
+}

@@ -1,0 +1,165 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "parking/gunk/api/parkingstatement/all.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "StatementService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/statements": {
+      "get": {
+        "summary": "Statement",
+        "description": "Statement record.",
+        "operationId": "StatementService_GetParkingStatement",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/StatementsGetParkingStatementResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "parking data not found"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "StartDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          },
+          {
+            "name": "EndDate",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "date-time"
+          }
+        ],
+        "tags": [
+          "Statement"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "parkingstatementGetParkingStatementResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/parkingstatementStatementData"
+        }
+      },
+      "description": "UnParkVehicleResponse ..."
+    },
+    "parkingstatementStatement": {
+      "type": "object",
+      "properties": {
+        "TotalEarning": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "TotalParked": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "TotalHours": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "parkingstatementStatementData": {
+      "type": "object",
+      "properties": {
+        "Statements": {
+          "$ref": "#/definitions/parkingstatementStatement"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    }
+  }
+}

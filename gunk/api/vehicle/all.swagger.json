@@ -1,0 +1,288 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "parking/gunk/api/vehicle/all.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "VehicleService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/park": {
+      "post": {
+        "summary": "Park Vehicle",
+        "description": "Park Vehicle record.",
+        "operationId": "VehicleService_ParkVehicle",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/VehicleParkVehicleResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "failed to park vehicle"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/vehicleParkVehicleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Park Vehicle"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/unpark": {
+      "post": {
+        "summary": "UnPark Vehicle",
+        "description": "UnPark Vehicle record.",
+        "operationId": "VehicleService_UnParkVehicle",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/VehicleUnParkVehicleResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "failed to unpark vehicle"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/vehicleUnParkVehicleRequest"
+            }
+          }
+        ],
+        "tags": [
+          "UnPark Vehicle"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    },
+    "vehicleParkVehicleRequest": {
+      "type": "object",
+      "properties": {
+        "VehicleNo": {
+          "type": "string"
+        },
+        "LotID": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "VehicleNo",
+        "LotID"
+      ]
+    },
+    "vehicleParkVehicleResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/vehicleVehicleData"
+        }
+      },
+      "description": "ParkVehicleResponse ..."
+    },
+    "vehicleUnParkVehicleRequest": {
+      "type": "object",
+      "properties": {
+        "ParkingID": {
+          "type": "string"
+        },
+        "VehicleNo": {
+          "type": "string"
+        }
+      }
+    },
+    "vehicleUnParkVehicleResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/vehicleVehicleData"
+        }
+      },
+      "description": "UnParkVehicleResponse ..."
+    },
+    "vehicleVehicle": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "VehicleNo": {
+          "type": "string"
+        },
+        "Entry": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "Exit": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ParkedHours": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Fee": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SlotID": {
+          "type": "string"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "vehicleVehicleData": {
+      "type": "object",
+      "properties": {
+        "Vehicle": {
+          "$ref": "#/definitions/vehicleVehicle"
+        }
+      }
+    }
+  }
+}

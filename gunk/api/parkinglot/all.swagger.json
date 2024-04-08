@@ -1,0 +1,459 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "parking/gunk/api/parkinglot/all.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ParkingLotService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/lot/create": {
+      "post": {
+        "summary": "Insert new parkinglot",
+        "description": "Insert new parkinglot record.",
+        "operationId": "ParkingLotService_InsertParkingLot",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/parkinglotInsertParkingLotResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "parking lot not found"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/parkinglotInsertParkingLotRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Parking Lot"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/lot/list": {
+      "get": {
+        "summary": "List parkinglot records",
+        "description": "List all parkinglot records.",
+        "operationId": "ParkingLotService_ListParkingLot",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/parkinglotListParkingLotResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "failed to list parking lot"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "OrderBy",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "enum": [
+              "DESC",
+              "ASC"
+            ],
+            "default": "DESC"
+          },
+          {
+            "name": "SearchTerm",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "SortByColumn",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "Limit",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          }
+        ],
+        "tags": [
+          "Parking Lot"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    },
+    "/lot/{ID}/get": {
+      "get": {
+        "summary": "Get parkinglot records",
+        "description": "Get parkinglot records.",
+        "operationId": "ParkingLotService_GetParkingLot",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/parkinglotGetParkingLotResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "failed to get parking lot"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "ID",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "tags": [
+          "Parking Lot"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "parkinglotGetParkingLot": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "TotalSpace": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "TotalParked": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "ParkedVehicles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/parkinglotParkedVehicles"
+          }
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "parkinglotGetParkingLotData": {
+      "type": "object",
+      "properties": {
+        "ParkingLot": {
+          "$ref": "#/definitions/parkinglotGetParkingLot"
+        }
+      }
+    },
+    "parkinglotGetParkingLotResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/parkinglotGetParkingLotData"
+        }
+      }
+    },
+    "parkinglotInsertParkingLotRequest": {
+      "type": "object",
+      "properties": {
+        "Name": {
+          "type": "string"
+        },
+        "TotalSpace": {
+          "type": "integer",
+          "format": "int32"
+        }
+      },
+      "description": "InsertParkingLotRequest ...",
+      "required": [
+        "Name",
+        "TotalSpace"
+      ]
+    },
+    "parkinglotInsertParkingLotResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/parkinglotParkingLotData"
+        }
+      },
+      "description": "InsertParkingLotResponse ..."
+    },
+    "parkinglotListParkingLotData": {
+      "type": "object",
+      "properties": {
+        "ParkingLot": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/parkinglotParkingLot"
+          }
+        }
+      },
+      "description": "ListParkingLotResponse ..."
+    },
+    "parkinglotListParkingLotResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/parkinglotListParkingLotData"
+        },
+        "Total": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "parkinglotOrderBy": {
+      "type": "string",
+      "enum": [
+        "DESC",
+        "ASC"
+      ],
+      "default": "DESC"
+    },
+    "parkinglotParkedVehicles": {
+      "type": "object",
+      "properties": {
+        "VehicleNo": {
+          "type": "string"
+        },
+        "EntryTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "ParkedHours": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Fee": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "SlotID": {
+          "type": "string"
+        }
+      }
+    },
+    "parkinglotParkingLot": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "Name": {
+          "type": "string"
+        },
+        "TotalSpace": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "parkinglotParkingLotData": {
+      "type": "object",
+      "properties": {
+        "ParkingLot": {
+          "$ref": "#/definitions/parkinglotParkingLot"
+        }
+      }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    }
+  }
+}

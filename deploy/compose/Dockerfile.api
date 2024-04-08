@@ -1,0 +1,18 @@
+FROM golang:1.19-alpine as builder
+
+WORKDIR /src
+
+COPY go.mod .
+COPY go.sum .
+RUN go mod download
+
+ENV VERSION=localdev
+
+COPY . .
+
+WORKDIR api
+
+RUN go build -ldflags="-w -s -X main.version=$VERSION" -o api && \
+	if [ ! -f env/config ]; then cp env/sample.config env/config ; fi
+
+CMD ["sh", "-c", "./api"]

@@ -1,0 +1,199 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "parking/gunk/api/parkingslot/all.proto",
+    "version": "version not set"
+  },
+  "tags": [
+    {
+      "name": "ParkingSlotService"
+    }
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/parking-slot/update": {
+      "post": {
+        "summary": "Update parkingslot",
+        "description": "Update parkingslot record.",
+        "operationId": "ParkingSlotService_UpdateParkingSlot",
+        "responses": {
+          "200": {
+            "description": "Request executed successfully.",
+            "schema": {
+              "$ref": "#/definitions/parkingslotUpdateParkingSlotResponse"
+            }
+          },
+          "400": {
+            "description": "Returned when request is incorrect or malformed.",
+            "schema": {
+              "example": {
+                "code": 400,
+                "message": "request is incorrect or malformed"
+              }
+            }
+          },
+          "401": {
+            "description": "Returned when not authorized to perform this action.",
+            "schema": {
+              "example": {
+                "code": 401,
+                "message": "not authorized"
+              }
+            }
+          },
+          "404": {
+            "description": "Returned when not found.",
+            "schema": {
+              "example": {
+                "code": 404,
+                "message": "failed to update"
+              }
+            }
+          },
+          "500": {
+            "description": "Returned when internal server error.",
+            "schema": {
+              "example": {
+                "code": 500,
+                "message": "internal error"
+              }
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/googlerpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/parkingslotUpdateParkingSlotRequest"
+            }
+          }
+        ],
+        "tags": [
+          "Parking Slot"
+        ],
+        "produces": [
+          "application/json"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "googlerpcStatus": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    },
+    "parkingslotParkingSlot": {
+      "type": "object",
+      "properties": {
+        "ID": {
+          "type": "string"
+        },
+        "LotID": {
+          "type": "string"
+        },
+        "SlotNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Status": {
+          "$ref": "#/definitions/parkingslotStatus"
+        },
+        "CreatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "UpdatedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "parkingslotParkingSlotData": {
+      "type": "object",
+      "properties": {
+        "ParkingSlot": {
+          "$ref": "#/definitions/parkingslotParkingSlot"
+        }
+      }
+    },
+    "parkingslotStatus": {
+      "type": "string",
+      "enum": [
+        "UNKNOWN",
+        "AVAILABLE",
+        "UNDERMAINTENANCE",
+        "BOOKED"
+      ],
+      "default": "UNKNOWN"
+    },
+    "parkingslotUpdateParkingSlotRequest": {
+      "type": "object",
+      "properties": {
+        "LotID": {
+          "type": "string"
+        },
+        "SlotNumber": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Status": {
+          "$ref": "#/definitions/parkingslotStatus"
+        }
+      },
+      "description": "UpdateParkingSlotRequest ...",
+      "required": [
+        "LotID",
+        "SlotNumber",
+        "Status"
+      ]
+    },
+    "parkingslotUpdateParkingSlotResponse": {
+      "type": "object",
+      "properties": {
+        "Data": {
+          "$ref": "#/definitions/parkingslotParkingSlotData"
+        }
+      },
+      "description": "UpdateParkingSlotResponse ..."
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "typeUrl": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string",
+          "format": "byte"
+        }
+      }
+    }
+  }
+}

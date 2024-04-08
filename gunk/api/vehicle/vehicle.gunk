@@ -1,0 +1,146 @@
+package vehicle
+
+import (
+	"time"
+
+	"github.com/gunk/opt/http"
+	"github.com/gunk/opt/openapiv2"
+)
+
+type Vehicle struct {
+	ID          string    `pb:"1" json:"ID"`
+	VehicleNo   string    `pb:"2" json:"VehicleNo"`
+	Entry       time.Time `pb:"3" json:"Entry"`
+	Exit        time.Time `pb:"4" json:"Exit"`
+	ParkedHours int32     `pb:"5" json:"ParkedHours"`
+	Fee         int32     `pb:"6" json:"Fee"`
+	SlotID      string    `pb:"7" json:"SlotID"`
+	CreatedAt   time.Time `pb:"8" json:"CreatedAt"`
+	UpdatedAt   time.Time `pb:"9" json:"UpdatedAt"`
+}
+
+type VehicleData struct {
+	Vehicle Vehicle `pb:"1" json:"Vehicle"`
+}
+
+// +gunk openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+//         Required: []string{
+//                 "VehicleNo",
+//                 "LotID",
+//         },
+// }}
+type ParkVehicleRequest struct {
+	VehicleNo string `pb:"1" json:"VehicleNo"`
+	LotID     string `pb:"2" json:"LotID"`
+}
+
+// ParkVehicleResponse ...
+type ParkVehicleResponse struct {
+	Data VehicleData `pb:"1" json:"Data"`
+}
+
+type UnParkVehicleRequest struct {
+	ID        string `pb:"1" json:"ParkingID"`
+	VehicleNo string `pb:"2" json:"VehicleNo"`
+}
+
+// UnParkVehicleResponse ...
+type UnParkVehicleResponse struct {
+	Data VehicleData `pb:"1" json:"Data"`
+}
+
+type VehicleService interface {
+	// ParkVehicle creates Vehicle record.
+	//
+	// +gunk http.Match{
+	//         Method: "POST",
+	//         Path:   "/park",
+	//         Body:   "*",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"Park Vehicle"},
+	//         Description: "Park Vehicle record.",
+	//         Summary:     "Park Vehicle",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/VehicleParkVehicleResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"failed to park vehicle\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	ParkVehicle(ParkVehicleRequest) ParkVehicleResponse
+
+	// UnParkVehicle creates Vehicle record.
+	//
+	// +gunk http.Match{
+	//         Method: "POST",
+	//         Path:   "/unpark",
+	//         Body:   "*",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"UnPark Vehicle"},
+	//         Description: "UnPark Vehicle record.",
+	//         Summary:     "UnPark Vehicle",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/VehicleUnParkVehicleResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"failed to unpark vehicle\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	UnParkVehicle(UnParkVehicleRequest) UnParkVehicleResponse
+}

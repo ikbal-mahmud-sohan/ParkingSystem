@@ -1,0 +1,44 @@
+# use buildkit
+# export COMPOSE_DOCKER_CLI_BUILD=1 DOCKER_BUILDKIT=1
+version: "3"
+
+services:
+  postgresd:
+    container_name: parking_postgresd
+    image: postgres:13-alpine
+    labels:
+      logging: "promtail"
+    ports:
+      - 5435:5432
+    volumes:
+      - ./create-parking-database.sh:/docker-entrypoint-initdb.d/create-parking-database.sh
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=postgres
+      - CREATE_EXTENSION=uuid-ossp
+    restart: unless-stopped
+
+  parking-api:
+    container_name: parking_api
+    depends_on:
+      - postgresd
+    build:
+      context: ../..
+      dockerfile: deploy/compose/Dockerfile.api
+    ports:
+      - 5051:5051
+      - 8181:8181
+    environment:
+      RUNTIME_ENVIRONMENT: "development"
+      SERVER_PORT: "5051"
+      SERVER_GATEWAY_PORT: "8181"
+      SERVER_HOST: 127.0.0.1
+      RUNTIME_LOGLEVEL: "debug"
+      DATABASE_HOST: parking_postgresd
+      DATABASE_PORT: "5432"
+      DATABASE_USER: postgres
+      DATABASE_DBNAME: parkingdb
+      DATABASE_PASSWORD: password
+      CORS_ALLOW_ORIGIN: "*"
+    restart: unless-stopped

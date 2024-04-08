@@ -1,0 +1,100 @@
+package parkingslot
+
+import (
+	"time"
+
+	"github.com/gunk/opt/http"
+	"github.com/gunk/opt/openapiv2"
+)
+
+type Status int
+
+const (
+	UNKNOWN Status = iota
+	AVAILABLE
+	UNDERMAINTENANCE
+	BOOKED
+)
+
+type ParkingSlot struct {
+	ID         string    `pb:"1" json:"ID"`
+	LotID      string    `pb:"2" json:"LotID"`
+	SlotNumber int32     `pb:"3" json:"SlotNumber"`
+	Status     Status    `pb:"4" json:"Status"`
+	CreatedAt  time.Time `pb:"5" json:"CreatedAt"`
+	UpdatedAt  time.Time `pb:"6" json:"UpdatedAt"`
+}
+
+type ParkingSlotData struct {
+	ParkingSlot ParkingSlot `pb:"1" json:"ParkingSlot"`
+}
+
+// UpdateParkingSlotRequest ...
+//
+// +gunk openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+//         Required: []string{
+//                 "LotID",
+//                 "SlotNumber",
+//                 "Status",
+//         },
+// }}
+type UpdateParkingSlotRequest struct {
+	LotID      string `pb:"1" json:"LotID"`
+	SlotNumber int32  `pb:"2" json:"SlotNumber"`
+	Status     Status `pb:"3" json:"Status"`
+}
+
+// UpdateParkingSlotResponse ...
+type UpdateParkingSlotResponse struct {
+	Data ParkingSlotData `pb:"1" json:"Data"`
+}
+
+// ParkingSlotService ...
+type ParkingSlotService interface {
+	// UpdateParkingSlot creates ParkingSlot record.
+	//
+	// +gunk http.Match{
+	//         Method: "POST",
+	//         Path:   "/parking-slot/update",
+	//         Body:   "*",
+	// }
+	// +gunk openapiv2.Operation{
+	//         Tags:        []string{"Parking Slot"},
+	//         Description: "Update parkingslot record.",
+	//         Summary:     "Update parkingslot",
+	//         Produces:    []string{"application/json"},
+	//         Responses: map[string]openapiv2.Response{
+	//                 "200": openapiv2.Response{
+	//                         Description: "Request executed successfully.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Ref: "#/definitions/parkingslotUpdateParkingSlotResponse",
+	//                         }},
+	//                 },
+	//                 "400": openapiv2.Response{
+	//                         Description: "Returned when request is incorrect or malformed.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 400, \"message\": \"request is incorrect or malformed\" }",
+	//                         }},
+	//                 },
+	//                 "401": openapiv2.Response{
+	//                         Description: "Returned when not authorized to perform this action.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 401, \"message\": \"not authorized\" }",
+	//                         }},
+	//                 },
+	//                 "404": openapiv2.Response{
+	//                         Description: "Returned when not found.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 404, \"message\": \"failed to update\" }",
+	//                         }},
+	//                 },
+	//                 "500": openapiv2.Response{
+	//                         Description: "Returned when internal server error.",
+	//                         Schema: openapiv2.Schema{JSONSchema: openapiv2.JSONSchema{
+	//                                 Example: "{ \"code\": 500, \"message\": \"internal error\" }",
+	//                         }},
+	//                 },
+	//         },
+	// }
+	UpdateParkingSlot(UpdateParkingSlotRequest) UpdateParkingSlotResponse
+}
